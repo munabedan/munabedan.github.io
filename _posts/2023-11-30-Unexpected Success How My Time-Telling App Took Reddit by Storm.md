@@ -1,5 +1,5 @@
 ---
-Title: The Journey of Launching my First Open Source Web App
+title: Unexpected Success; How My Time-Telling App Took Reddit by Storm
 Date: 2023-11-31 17:00
 Categories: [Development]
 Tags: [development]
@@ -17,7 +17,7 @@ However, my plans to launch the app on Play Store hit a snag due to the initial 
 
 Then, a text from a friend served as a wake-up call, reminding me of the dormant app now a year overdue. Determined to revive it, I embarked on resurrecting the project. Yet, I faced a new challenge—Apache Cordova had advanced to a newer version, rendering my previous code incompatible. Frustrated with the inability to compile for Android, I pivoted, choosing to deploy a browser-based version hosted on Firebase's free spark tier.
 
-Following the initial deployment, an impulse nudged me to share my creation on r/sideproject, a subreddit dedicated to exchanging feedback on personal projects. Simultaneously, I posted on r/dataisbeautiful, anticipating appreciation for the dashboard's aesthetics.
+Following the initial deployment, an impulse nudged me to share my creation on [r/sideproject](https://old.reddit.com/r/SideProject/comments/186rbl4/if_you_need_an_intuitive_way_of_telling_time/), a subreddit dedicated to exchanging feedback on personal projects. Simultaneously, I posted on [r/dataisbeautiful](https://old.reddit.com/r/dataisbeautiful/comments/186xl36/oc_created_this_webapp_to_show_you_how_much_time/), anticipating appreciation for the dashboard's aesthetics.
 
 The response overwhelmed me. The community’s enthusiastic reception, unexpected donations on BuyMeACoffee, a flurry of feature requests, bug fixes, and imaginative suggestions flooded in. The outpouring of support not only bolstered my confidence but also ignited my creativity. My GitHub repository blossomed with additional stars and followers, encouraging me further.
 
