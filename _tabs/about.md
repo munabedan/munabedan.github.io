@@ -8,7 +8,7 @@ order: 1
 
 I'm a software developer with a passion for open source and a love for all things Linux. I enjoy exploring new technologies, creating software solutions, and tinkering with code.
 
-- 🌍 I'm based in Kapsabet, Kenya.
+- 🌍 I'm based in Kenya.
 - 💻 I specialize in software development, and I'm always eager to learn more.
 - 🐧 I'm a Linux enthusiast, and I enjoy working in open-source environments.
 
