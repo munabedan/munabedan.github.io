@@ -5,7 +5,7 @@ date: 2023-21-26 17:00
 categories: [Development, Scripting]
 tags: [development, scripting, bash]
 image:
-    path: images/screenshot-caja-scripts.png
+    path: /images/screenshot-caja-scripts.png
 ---
 
 ### Introduction
