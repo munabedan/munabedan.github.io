@@ -1,8 +1,8 @@
 ---
 title: Unexpected Success; How My Time-Telling App Took Reddit by Storm
-Date: 2023-11-31 17:00
-Categories: [Development]
-Tags: [development]
+date: 2023-11-31 17:00
+categories: [Development]
+tags: [development]
 image:
     path: /images/screenshot-chronograf.png
 ---

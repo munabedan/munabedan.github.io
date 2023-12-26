@@ -1,13 +1,9 @@
 ---
 
-Title: Enhancing Caja Capabilities Using Bash Scripting
-
-Date: 2023-11-31 17:00
-
-Categories: [Development, Scripting]
-
-Tags: [development, scripting, bash]
-
+title: Enhancing Caja Capabilities Using Bash Scripting
+date: 2023-21-26 17:00
+categories: [Development, Scripting]
+tags: [development, scripting, bash]
 image:
     path: images/screenshot-caja-scripts.png
 ---
