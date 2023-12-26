@@ -1,14 +1,12 @@
 ---
 
 title: Enhancing Caja Capabilities Using Bash Scripting
-date: 2023-21-26 17:00
+date: 2023-12-26 00:00
 categories: [Development, Scripting]
 tags: [development, scripting, bash]
 image:
     path: /images/screenshot-caja-scripts.png
 ---
-
-### Introduction
 
 If you're a Mate desktop user, Caja serves as your primary file manager. Today, let's delve into something exciting—expanding the functionalities of Caja using Bash scripting. Additionally, these methods can easily apply to Nautilus with just a few adjustments, refer to [Ubuntu's Nautilus Scripts How-to](https://help.ubuntu.com/community/NautilusScriptsHowto)
 .
