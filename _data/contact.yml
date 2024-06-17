@@ -4,7 +4,8 @@
   icon: "fab fa-github"
 
 - type: linkedin
-  icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
+  icon: 'fab fa-linkedin' 
+  url: 'https://www.linkedin.com/in/munabedan'  # icons powered by <https://fontawesome.com/>
 
 - type: email
   icon: "fas fa-envelope"
