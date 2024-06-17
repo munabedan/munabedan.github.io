@@ -1,0 +1,49 @@
+---
+
+Title: Cache Busting Like a Pro
+
+Date: 2023-12-27 17:00
+
+Categories: [Development, Scripting]
+
+Tags: [development, scripting, bash]
+
+image:
+    path: images/screenshot-caja-scripts.png
+---
+
+Ever faced this scenario? Your client requests a font size reduction on site X, a seemingly straightforward task. You swiftly navigate to styles.css, tweak the `H1` element's font size from `font-size: 30;` to `font-size: 18;`.
+
+But then comes the dreaded message: "I don't see the changes on my device," your client complains.
+
+You double-check—yes, you made the alteration. However, the client's browser stubbornly clings to the previously cached CSS files, ignoring the recent updates sitting on the server.
+
+Enter the solution: Cache Busting—a set of techniques ensuring browsers fetch the latest versions of files.
+
+Here's a technique I rely on: a script generating a unique hash for each file and appending it to the filename.
+
+```bash
+#!/bin/bash
+
+# Directory containing CSS files
+directory="."
+
+# Iterate through CSS files in the directory
+for file in "$directory"/*.css; do
+  if [ -f "$file" ]; then
+    # Generate MD5 hash
+    hash=$(md5sum "$file" | cut -d ' ' -f 1 | cut -c -8)
+    
+    # Extract filename and extension
+    filename=$(basename "$file")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+
+    # Rename the file with hash
+    mv "$file" "$directory/${filename}-${hash}.${extension}"
+    echo "Renamed ${filename}.${extension} to ${filename}-${hash}.${extension}"
+  fi
+done
+```
+
+By incorporating these hashed filenames into your HTML calls, the browser will fetch the correct file version, ensuring your client sees the latest changes without any cache-related hiccups.

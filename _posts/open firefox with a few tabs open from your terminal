@@ -1,0 +1,8 @@
+
+
+You no longer need to add -url, simply write firefox followed by space-separated URLs.
+
+Example:
+
+firefox mail.google.com askubuntu.com stackoverflow.com
+

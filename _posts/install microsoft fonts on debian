@@ -1,0 +1,5 @@
+  621  sudo apt install software-properties-common -y
+  631  sudo apt-add-repository contrib
+  632  sudo apt-add-repository non-free
+  633  sudo apt update
+  634  sudo apt install ttf-mscorefonts-installer
