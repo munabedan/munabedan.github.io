@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Categorizing Code for Better Readability | Technical Journal</title><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Inter:wght@300..800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/global.DnYzz9ot.css">
+<link rel="stylesheet" href="/_astro/_..CJ4UusAr.css"></head> <body class="bg-[#050805] text-slate-300 selection:bg-emerald-500/30"> <header class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"> <nav class="flex items-center gap-2 px-6 py-2 rounded-full border border-emerald-900/50 bg-[#050805]/80 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.1)]"> <a href="/" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Home </a><a href="/projects" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Projects </a><a href="/blog" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Blog </a><a href="/contact" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Contact </a> <div class="h-4 w-[1px] bg-emerald-900/50 mx-2"></div> <a href="/resume" class="px-4 py-1.5 rounded-full text-sm font-medium border border-emerald-500/30 text-emerald-400 bg-emerald-950/20 hover:bg-emerald-500 hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+Resume
+</a> </nav> </header> <main class="pt-24 min-h-screen"> <div class="max-w-6xl mx-auto px-6 mb-12"> <nav class="font-mono text-[10px] tracking-widest text-emerald-500/40 uppercase mb-8"> <a href="/" class="hover:text-emerald-400 transition-colors">root</a> /
+<a href="/blog" class="hover:text-emerald-400 transition-colors">journal</a> /
+<span class="text-emerald-500">categorizing-code-for-better-readability</span> </nav>  <article class="grid grid-cols-1 lg:grid-cols-12 gap-12"> <div class="lg:col-span-8 space-y-8">  <div class="prose prose-invert prose-emerald max-w-none font-sans text-slate-300">  <h2 id="the-mental-model-for-reading-code">The Mental Model for Reading Code</h2>
+<p>Understanding a codebase requires splitting the logic into what is useful and what is noise. By categorizing code into specific functional roles, developers can sort information and gain a clear mental map of the system. This classification also informs how we structure our own projects for maximum readability.</p>
+<hr>
+<h2 id="core-structural-categories">Core Structural Categories</h2>
+<h3 id="glue-code">Glue Code</h3>
+<p>Glue code connects disparate components; for example; converting JSON to CSV or mapping one interface to another.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Error handling; value conversion; handling “bad” values; avoiding lossy conversions.</li>
+</ul>
+<h3 id="interface-defining">Interface Defining</h3>
+<p>This code handles the hard boundaries of a module.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Completeness; guarantees; identifying exposed internal details; interface contracts; managed errors.</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<p>This is the core logic that fulfills project requirements.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Input validation from public interfaces; variable state tracking; impact analysis for new features; test coverage; variable lifetimes.</li>
+</ul>
+<hr>
+<h2 id="logic-and-flow">Logic and Flow</h2>
+<h3 id="process-alignment">Process Alignment</h3>
+<p>This describes the flow of execution.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Traceability of function calls; state initialization; determining if state is explicit (parameters) or implicit (instance variables); identifying the single path to a specific state.</li>
+</ul>
+<h3 id="algorithms">Algorithms</h3>
+<p>A specialized implementation category usually hidden from the outside world.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Choice of data structures; running time; Big-O notation; optimization opportunities.</li>
+</ul>
+<h3 id="state-machines">State Machines</h3>
+<p>Code describing distinct states and transition rules.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Defining states (Starting, Running, Stopped); event triggers; preventing inconsistent states (e.g., “Finished” before “Ready”); state consistency testing.</li>
+</ul>
+<hr>
+<h2 id="execution-and-control">Execution and Control</h2>
+<h3 id="tasking">Tasking</h3>
+<p>Handles transactionality and execution flow.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Frequency of execution; error handling; resumability (continuing from a saved state); sequentiality (loops and directed flow).</li>
+</ul>
+<h3 id="guards-coercions-and-defaults">Guards, Coercions, and Defaults</h3>
+<ul>
+<li><strong>Guards:</strong> Logic that checks variable types and throws errors to prevent invalid execution.</li>
+<li><strong>Coercions:</strong> Forcing a variable from one type to another.</li>
+<li><strong>Defaults:</strong> Logic that assigns specific fallback values to variables.</li>
+</ul>
+<hr>
+<h2 id="environment-and-observability">Environment and Observability</h2>
+<h3 id="configuration">Configuration</h3>
+<p>Settings that define the runtime environment.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Environment counts (Production vs. Staging); instance-specific settings; delivery methods (JSON, YAML, ENV); machine writeability for deployment scripts; security for API keys and tokens.</li>
+</ul>
+<h3 id="tracing">Tracing</h3>
+<p>Code used to explore and monitor runtime values.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Inspection points for test suites; debug log utility; identifying where and why a failure occurred.</li>
+</ul>
+<hr>
+<h2 id="advanced-concepts">Advanced Concepts</h2>
+<h3 id="reflexivity-and-metaprogramming">Reflexivity and Metaprogramming</h3>
+<p>These categories deal with how code interacts with its own structure.</p>
+<ul>
+<li><strong>Reflexivity:</strong> Self-awareness. The code inspects its own functions, variables, or names.</li>
+<li><strong>Metaprogramming:</strong> Self-modification. The code generates or transforms logic at runtime (e.g., Python decorators).</li>
+</ul>
+<h3 id="composition-and-inheritance">Composition and Inheritance</h3>
+<p>Analysis of how objects are built.</p>
+<ul>
+<li><strong>Key Considerations:</strong> Identifying recognizable parts; naming conventions for components; structural relationships.</li>
+</ul>
+<h3 id="layers-and-lifetimes">Layers and Lifetimes</h3>
+<ul>
+<li><strong>Layers:</strong> Determining the number of wrappers around a specific function or interface.</li>
+<li><strong>Lifetimes:</strong> Tracking who initializes values; when they change; where they are stored; and ensuring they remain consistent.</li>
+</ul>
+<h3 id="common-operations">Common Operations</h3>
+<p>Basic utility logic including arithmetic and functional primitives like map, reduce, add, or subtract.</p>
+<hr>
+<h2 id="references">References</h2>
+<p><a href="https://aredridel.dinhe.net/2015/03/29/how-to-read-source-code/">How to read source code by Aredridel</a></p>  </div> </div> <aside class="lg:col-span-4 space-y-10"> <div class="p-6 rounded-xl border border-emerald-900/20 bg-emerald-950/5 backdrop-blur-sm"> <h3 class="text-emerald-500 font-mono text-[10px] uppercase tracking-widest mb-4">Post Metadata</h3> <div class="space-y-4 font-mono text-xs"> <div> <span class="text-slate-500 block mb-1 underline decoration-emerald-900">PUBLISHED ON:</span> <span class="text-slate-200">Feb 25, 2026</span> </div> <div> <span class="text-slate-500 block mb-1 underline decoration-emerald-900">CATEGORY:</span> <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase"> Software Engineering </span> </div> </div> </div> <div class="p-6 rounded-xl border border-emerald-900/20 bg-[#0a0f0a]/50"> <h3 class="text-emerald-500 font-mono text-[10px] uppercase tracking-widest mb-4">Tags</h3> <div class="flex flex-wrap gap-2"> <span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#clean-code </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#software-architecture </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#programming-patterns </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#refactoring </span> </div> </div> <div class="space-y-4"> <h3 class="text-emerald-500 font-mono text-[10px] uppercase tracking-widest px-2">Related Articles</h3> <div class="space-y-2"> <a href="/categorizing-code-for-better-readability" class="block p-4 rounded-lg border border-emerald-900/10 hover:border-emerald-500/30 bg-emerald-950/5 transition-all group"> <div class="flex justify-between items-start"> <span class="text-[10px] text-emerald-800 font-mono group-hover:text-emerald-500 transition-colors">
+>> article
+</span> <span class="text-[9px] text-emerald-900 font-mono"> 4 MATCH(ES)
+</span> </div> <p class="text-sm text-slate-300 font-medium group-hover:text-slate-100 transition-colors mt-1"> Categorizing Code for Better Readability </p> </a> </div> </div> </aside> </article> </div> </main> <footer class="py-16 px-6 bg-[#050805] border-t border-emerald-900/20 relative overflow-hidden"> <div class="absolute inset-0 pointer-events-none opacity-[0.02] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div> <div class="max-w-6xl mx-auto relative z-10"> <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16"> <div class="space-y-6"> <div class="flex items-center gap-2"> <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]"></div> <span class="font-mono text-sm font-bold text-slate-100 tracking-tighter">BEDAN_MUNA.SYS</span> </div> <div class="space-y-3"> <p class="text-[11px] text-slate-500 leading-relaxed font-mono">
+Specializing in Docs-as-Code architecture and high-performance infrastructure automation.
+</p> <p class="text-[10px] font-mono text-emerald-900 uppercase tracking-widest">
+Origin: Nairobi_KE // GMT+3
+</p> </div> </div> <div class="grid grid-cols-2 gap-8"> <div class="space-y-4"> <h4 class="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.2em]">Index</h4> <ul class="text-[11px] font-mono space-y-3 text-slate-400"> <li><a href="/" class="hover:text-emerald-400 transition-colors">// home</a></li> <li><a href="/projects" class="hover:text-emerald-400 transition-colors">// projects</a></li> <li><a href="/blog" class="hover:text-emerald-400 transition-colors">// journal</a></li> </ul> </div> <div class="space-y-4"> <h4 class="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.2em]">Endpoints</h4> <ul class="text-[11px] font-mono space-y-3 text-slate-400"> <li><a href="https://github.com/munabedan" class="hover:text-emerald-400 transition-colors">// github</a></li> <li><a href="https://linkedin.com/in/muna-bedan" class="hover:text-emerald-400 transition-colors">// linkedin</a></li> <li><a href="mailto:bedanmuna@gmail.com" class="hover:text-emerald-400 transition-colors">// email</a></li> </ul> </div> </div> <div class="hidden md:block space-y-4 border-l border-emerald-900/10 pl-12"> <h4 class="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.2em]">Core Metrics</h4> <div class="font-mono text-[10px] space-y-2 text-slate-600"> <div class="flex justify-between border-b border-emerald-900/10 pb-1"> <span>Uptime</span> <span class="text-emerald-500/60">100%_WEEKLY</span> </div> <div class="flex justify-between border-b border-emerald-900/10 pb-1"> <span>Stack</span> <span class="text-emerald-500/60">ASTRO_JS</span> </div> </div> </div> </div> <div class="pt-8 border-t border-emerald-900/10 flex flex-col md:flex-row justify-between items-center gap-6"> <div class="flex items-center gap-4"> <p class="text-[10px] font-mono text-slate-600 uppercase tracking-wider">
+&copy; 2026 Bedan K. Muna
+</p> <span class="hidden md:inline text-emerald-900/20">|</span> <p class="text-[10px] font-mono text-emerald-900/40 italic">
+Built_with_Sovereign_Intelligence
+</p> </div> <div class="flex items-center gap-4"> <div class="px-2 py-0.5 rounded border border-emerald-900/50 bg-emerald-950/10 text-[9px] font-mono text-emerald-500/40">
+v1.0.0_STABLE
+</div> <div class="text-[10px] font-mono text-slate-700"> 13:41_EAT
+</div> </div> </div> </div> </footer> </body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Emulating ESP32 with QEMU and ESP-IDF | Technical Journal</title><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Inter:wght@300..800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/global.DnYzz9ot.css">
+<link rel="stylesheet" href="/_astro/_..CJ4UusAr.css"></head> <body class="bg-[#050805] text-slate-300 selection:bg-emerald-500/30"> <header class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"> <nav class="flex items-center gap-2 px-6 py-2 rounded-full border border-emerald-900/50 bg-[#050805]/80 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.1)]"> <a href="/" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Home </a><a href="/projects" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Projects </a><a href="/blog" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Blog </a><a href="/contact" class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/30 active:scale-95"> Contact </a> <div class="h-4 w-[1px] bg-emerald-900/50 mx-2"></div> <a href="/resume" class="px-4 py-1.5 rounded-full text-sm font-medium border border-emerald-500/30 text-emerald-400 bg-emerald-950/20 hover:bg-emerald-500 hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+Resume
+</a> </nav> </header> <main class="pt-24 min-h-screen"> <div class="max-w-6xl mx-auto px-6 mb-12"> <nav class="font-mono text-[10px] tracking-widest text-emerald-500/40 uppercase mb-8"> <a href="/" class="hover:text-emerald-400 transition-colors">root</a> /
+<a href="/blog" class="hover:text-emerald-400 transition-colors">journal</a> /
+<span class="text-emerald-500">esp32-qemu-emulation-guide</span> </nav>  <article class="grid grid-cols-1 lg:grid-cols-12 gap-12"> <div class="lg:col-span-8 space-y-8">  <div class="prose prose-invert prose-emerald max-w-none font-sans text-slate-300">  <h2 id="overview">Overview</h2>
+<p>Testing ESP32 applications does not always require physical hardware. By leveraging QEMU (Quick Emulator) integrated with the ESP-IDF, developers can build, flash, and monitor applications within a virtualized environment. This is particularly useful for CI/CD pipelines or rapid prototyping when a dev kit is unavailable.</p>
+<h2 id="environment-setup">Environment Setup</h2>
+<p>Before running the emulator, ensure your ESP-IDF environment is correctly sourced. This provides the necessary <code>idf.py</code> path and Python dependencies.</p>
+<ol>
+<li>Navigate to your ESP directory.</li>
+<li>Source the export script to activate the environment.</li>
+</ol>
+<pre class="astro-code vitesse-black" style="background-color:#000;color:#dbd7cacc; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B8A965">cd</span><span style="color:#C98A7D"> ~/esp/esp-idf</span></span>
+<span class="line"><span style="color:#80A665">./export.sh</span></span></code></pre>
+<p><img alt="activate esp idf" loading="lazy" decoding="async"  width="954" height="717" src="/_astro/esp-export.Bn5ZIp2Y_Z1T8ih8.webp" ></p>
+<p>Upon successful activation, you should see a confirmation message indicating that the <code>IDF_PATH</code> is set and the Python virtual environment is active.</p>
+<h2 id="building-the-project">Building the Project</h2>
+<p>Navigate to your project directory (e.g., the <code>hello_world</code> example) and perform a standard build. QEMU requires a compiled binary to generate the flash image.</p>
+<pre class="astro-code vitesse-black" style="background-color:#000;color:#dbd7cacc; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B8A965">cd</span><span style="color:#C98A7D"> ~/esp/hello_world</span></span>
+<span class="line"><span style="color:#80A665">idf.py</span><span style="color:#C98A7D"> build</span></span></code></pre>
+<p><img alt="IDF build" loading="lazy" decoding="async"  width="958" height="483" src="/_astro/idf-build.D5qGpdjI_tWmT3.webp" ></p>
+<p>The build process generates the bootloader, partition table, and the application binary.</p>
+<h2 id="running-in-qemu">Running in QEMU</h2>
+<p>The ESP-IDF provides a wrapper command to simplify launching QEMU. Instead of manually configuring machine types and drive files, use the <code>qemu</code> target with <code>idf.py</code>.</p>
+<p>To start the emulation and immediately open the monitor:</p>
+<pre class="astro-code vitesse-black" style="background-color:#000;color:#dbd7cacc; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#80A665">idf.py</span><span style="color:#C98A7D"> qemu</span><span style="color:#C98A7D"> monitor</span></span></code></pre>
+<p><img alt="QEMU monitor" loading="lazy" decoding="async"  width="958" height="788" src="/_astro/qemu-monitor-1.BaQzIk08_Z1mlG68.webp" ></p>
+<h3 id="what-happens-under-the-hood">What happens under the hood:</h3>
+<ul>
+<li><strong>Binary Merging:</strong> The tool uses <code>esptool.py</code> to merge the bootloader, partition table, and app binary into a single <code>qemu_flash.bin</code> file.</li>
+<li><strong>QEMU Invocation:</strong> It launches <code>qemu-system-xtensa</code> with the <code>-M esp32</code> machine flag.</li>
+<li><strong>Network Socket:</strong> By default, the emulator runs on a local socket (typically <code>localhost:5555</code>).</li>
+<li><strong>IDF Monitor:</strong> The command automatically attaches the <code>idf_monitor</code> to the QEMU serial output.</li>
+</ul>
+<h2 id="execution-and-output">Execution and Output</h2>
+<p>Once the emulator starts, you will see the standard ESP32 bootloader logs. This includes:</p>
+<ul>
+<li>CPU frequency (typically 160MHz).</li>
+<li>Application information and compile time.</li>
+<li>Heap initialization and RAM availability.</li>
+<li>The execution of <code>app_main()</code>.</li>
+</ul>
+<p><img alt="QEMU monitor" loading="lazy" decoding="async"  width="955" height="948" src="/_astro/qemu-monitor-2.CDruIWxC_1B82bB.webp" ></p>
+<p>For the <code>hello_world</code> example, the terminal will print “Hello world!” followed by hardware details and a restart countdown.</p>
+<h2 id="controlling-the-session">Controlling the Session</h2>
+<p>Because the monitor is attached to a virtual serial port, standard terminal signals might not behave as expected.</p>
+<ul>
+<li><strong>To Quit:</strong> Use the shortcut <code>Ctrl + ]</code>.</li>
+<li><strong>Alternative Exit:</strong> If using standard QEMU escape sequences, use <code>Ctrl + A</code> then <code>X</code>.</li>
+</ul>
+<h2 id="references">References</h2>
+<p><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/tools/qemu.html">QEMU emulator with support for ESP32.</a></p>  </div> </div> <aside class="lg:col-span-4 space-y-10"> <div class="p-6 rounded-xl border border-emerald-900/20 bg-emerald-950/5 backdrop-blur-sm"> <h3 class="text-emerald-500 font-mono text-[10px] uppercase tracking-widest mb-4">Post Metadata</h3> <div class="space-y-4 font-mono text-xs"> <div> <span class="text-slate-500 block mb-1 underline decoration-emerald-900">PUBLISHED ON:</span> <span class="text-slate-200">Feb 16, 2026</span> </div> <div> <span class="text-slate-500 block mb-1 underline decoration-emerald-900">CATEGORY:</span> <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase"> IoT </span> </div> </div> </div> <div class="p-6 rounded-xl border border-emerald-900/20 bg-[#0a0f0a]/50"> <h3 class="text-emerald-500 font-mono text-[10px] uppercase tracking-widest mb-4">Tags</h3> <div class="flex flex-wrap gap-2"> <span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#ESP32 </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#QEMU </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#ESP-IDF </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#Emulation </span><span class="text-[10px] px-2 py-1 bg-emerald-950/30 text-emerald-500/60 border border-emerald-900/30 rounded uppercase tracking-tighter hover:border-emerald-500/50 transition-colors">
+#IoT </span> </div> </div> <div class="space-y-4"> <h3 class="text-emerald-500 font-mono text-[10px] uppercase tracking-widest px-2">Related Articles</h3> <div class="space-y-2"> <a href="/esp32-qemu-emulation-guide" class="block p-4 rounded-lg border border-emerald-900/10 hover:border-emerald-500/30 bg-emerald-950/5 transition-all group"> <div class="flex justify-between items-start"> <span class="text-[10px] text-emerald-800 font-mono group-hover:text-emerald-500 transition-colors">
+>> article
+</span> <span class="text-[9px] text-emerald-900 font-mono"> 5 MATCH(ES)
+</span> </div> <p class="text-sm text-slate-300 font-medium group-hover:text-slate-100 transition-colors mt-1"> Emulating ESP32 with QEMU and ESP-IDF </p> </a><a href="/getting-started-with-esp32-development" class="block p-4 rounded-lg border border-emerald-900/10 hover:border-emerald-500/30 bg-emerald-950/5 transition-all group"> <div class="flex justify-between items-start"> <span class="text-[10px] text-emerald-800 font-mono group-hover:text-emerald-500 transition-colors">
+>> article
+</span> <span class="text-[9px] text-emerald-900 font-mono"> 3 MATCH(ES)
+</span> </div> <p class="text-sm text-slate-300 font-medium group-hover:text-slate-100 transition-colors mt-1"> Getting Started with ESP32 Development </p> </a> </div> </div> </aside> </article> </div> </main> <footer class="py-16 px-6 bg-[#050805] border-t border-emerald-900/20 relative overflow-hidden"> <div class="absolute inset-0 pointer-events-none opacity-[0.02] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div> <div class="max-w-6xl mx-auto relative z-10"> <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16"> <div class="space-y-6"> <div class="flex items-center gap-2"> <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]"></div> <span class="font-mono text-sm font-bold text-slate-100 tracking-tighter">BEDAN_MUNA.SYS</span> </div> <div class="space-y-3"> <p class="text-[11px] text-slate-500 leading-relaxed font-mono">
+Specializing in Docs-as-Code architecture and high-performance infrastructure automation.
+</p> <p class="text-[10px] font-mono text-emerald-900 uppercase tracking-widest">
+Origin: Nairobi_KE // GMT+3
+</p> </div> </div> <div class="grid grid-cols-2 gap-8"> <div class="space-y-4"> <h4 class="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.2em]">Index</h4> <ul class="text-[11px] font-mono space-y-3 text-slate-400"> <li><a href="/" class="hover:text-emerald-400 transition-colors">// home</a></li> <li><a href="/projects" class="hover:text-emerald-400 transition-colors">// projects</a></li> <li><a href="/blog" class="hover:text-emerald-400 transition-colors">// journal</a></li> </ul> </div> <div class="space-y-4"> <h4 class="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.2em]">Endpoints</h4> <ul class="text-[11px] font-mono space-y-3 text-slate-400"> <li><a href="https://github.com/munabedan" class="hover:text-emerald-400 transition-colors">// github</a></li> <li><a href="https://linkedin.com/in/muna-bedan" class="hover:text-emerald-400 transition-colors">// linkedin</a></li> <li><a href="mailto:bedanmuna@gmail.com" class="hover:text-emerald-400 transition-colors">// email</a></li> </ul> </div> </div> <div class="hidden md:block space-y-4 border-l border-emerald-900/10 pl-12"> <h4 class="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.2em]">Core Metrics</h4> <div class="font-mono text-[10px] space-y-2 text-slate-600"> <div class="flex justify-between border-b border-emerald-900/10 pb-1"> <span>Uptime</span> <span class="text-emerald-500/60">100%_WEEKLY</span> </div> <div class="flex justify-between border-b border-emerald-900/10 pb-1"> <span>Stack</span> <span class="text-emerald-500/60">ASTRO_JS</span> </div> </div> </div> </div> <div class="pt-8 border-t border-emerald-900/10 flex flex-col md:flex-row justify-between items-center gap-6"> <div class="flex items-center gap-4"> <p class="text-[10px] font-mono text-slate-600 uppercase tracking-wider">
+&copy; 2026 Bedan K. Muna
+</p> <span class="hidden md:inline text-emerald-900/20">|</span> <p class="text-[10px] font-mono text-emerald-900/40 italic">
+Built_with_Sovereign_Intelligence
+</p> </div> <div class="flex items-center gap-4"> <div class="px-2 py-0.5 rounded border border-emerald-900/50 bg-emerald-950/10 text-[9px] font-mono text-emerald-500/40">
+v1.0.0_STABLE
+</div> <div class="text-[10px] font-mono text-slate-700"> 13:41_EAT
+</div> </div> </div> </div> </footer> </body></html>
